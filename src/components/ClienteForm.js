@@ -1,21 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { addCliente, updateCliente, getClienteById } from '../api';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { addCliente, updateCliente, getClienteById } from "../api";
+import { useNavigate, useParams } from "react-router-dom";
+import { TextField, Button, Container, Typography, Paper } from "@mui/material";
 
 const ClienteForm = () => {
-  const [cliente, setCliente] = useState({ nome: '', email: '' });
+  const [cliente, setCliente] = useState({ nome: "", email: "" });
   const navigate = useNavigate();
   const { id } = useParams();
 
   useEffect(() => {
     if (id) {
-      getClienteById(id)
-        .then((response) => {
-          if (response.data) {
-            setCliente(response.data); // Atualiza o estado com os dados do cliente
-          }
-        })
-        .catch((error) => console.error('Erro ao buscar cliente:', error));
+      getClienteById(id).then((response) => setCliente(response.data));
     }
   }, [id]);
 
@@ -25,43 +20,27 @@ const ClienteForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const clienteData = { ...cliente };
-
-    try {
-      if (id) {
-        await updateCliente(Number(id), clienteData); // Garante que o ID seja um número
-      } else {
-        await addCliente(clienteData);
-      }
-      navigate('/');
-    } catch (error) {
-      console.error('Erro ao salvar cliente:', error);
+    if (id) {
+      await updateCliente(id, cliente);
+    } else {
+      await addCliente(cliente);
     }
+    navigate("/");
   };
 
   return (
-    <div>
-      <h2>{id ? 'Editar Cliente' : 'Novo Cliente'}</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="nome"
-          placeholder="Nome"
-          value={cliente.nome}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={cliente.email}
-          onChange={handleChange}
-          required
-        />
-        <button type="submit">Salvar</button>
-      </form>
-    </div>
+    <Container maxWidth="sm">
+      <Paper style={{ padding: "20px", marginTop: "20px" }}>
+        <Typography variant="h6">{id ? "Editar Cliente" : "Novo Cliente"}</Typography>
+        <form onSubmit={handleSubmit}>
+          <TextField fullWidth margin="normal" label="Nome" name="nome" value={cliente.nome} onChange={handleChange} required />
+          <TextField fullWidth margin="normal" label="Email" name="email" value={cliente.email} onChange={handleChange} required />
+          <Button type="submit" variant="contained" color="primary">
+            Salvar
+          </Button>
+        </form>
+      </Paper>
+    </Container>
   );
 };
 

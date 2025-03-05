@@ -1,45 +1,100 @@
-import React, { useEffect, useState } from 'react';
-import { getClientes, deleteCliente } from '../api';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { getClientes, deleteCliente } from "../api";
+import { useNavigate } from "react-router-dom";
+import { 
+  Table, TableBody, TableCell, TableContainer, TableHead, TableRow, 
+  Paper, Button, Typography, Container, Box 
+} from "@mui/material";
 
 const ClienteList = () => {
   const [clientes, setClientes] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchClientes();
+    getClientes().then((response) => setClientes(response.data));
   }, []);
 
-  const fetchClientes = async () => {
-    try {
-      const response = await getClientes();
-      setClientes(response.data);
-    } catch (error) {
-      console.error('Erro ao buscar clientes:', error);
-    }
-  };
-
   const handleDelete = async (id) => {
-    if (window.confirm('Tem certeza que deseja excluir este cliente?')) {
-      await deleteCliente(id);
-      fetchClientes();
-    }
+    await deleteCliente(id);
+    setClientes(clientes.filter((cliente) => cliente.id !== id));
   };
 
   return (
-    <div>
-      <h2>Lista de Clientes</h2>
-      <button onClick={() => navigate('/novo')}>Adicionar Cliente</button>
-      <ul>
-        {clientes.map((cliente) => (
-          <li key={cliente.id}>
-            {cliente.nome} - {cliente.email}
-            <button onClick={() => navigate(`/editar/${cliente.id}`)}>Editar</button>
-            <button onClick={() => handleDelete(cliente.id)}>Excluir</button>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <Container maxWidth="md">
+      {/* Box Centralizado */}
+      <Box 
+        sx={{
+          display: "flex", 
+          flexDirection: "column", 
+          alignItems: "center", 
+          justifyContent: "center",
+          marginTop: "30px",
+          padding: "20px",
+          backgroundColor: "#f5f5f5",
+          borderRadius: "8px",
+          boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)"
+        }}
+      >
+        <Typography 
+          variant="h5" 
+          sx={{ 
+            marginBottom: "15px", 
+            textAlign: "center",
+            fontWeight: "bold"
+          }}
+        >
+          Lista de Clientes
+        </Typography>
+        
+        <Button 
+          variant="contained" 
+          color="primary" 
+          onClick={() => navigate("/clientes/novo")} 
+          sx={{ marginBottom: "20px", padding: "10px 20px" }}
+        >
+          Adicionar Cliente
+        </Button>
+
+        <TableContainer component={Paper} sx={{ width: "100%" }}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell align="center">ID</TableCell>
+                <TableCell align="center">Nome</TableCell>
+                <TableCell align="center">Email</TableCell>
+                <TableCell align="center">Ações</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {clientes.map((cliente) => (
+                <TableRow key={cliente.id}>
+                  <TableCell align="center">{cliente.id}</TableCell>
+                  <TableCell align="center">{cliente.nome}</TableCell>
+                  <TableCell align="center">{cliente.email}</TableCell>
+                  <TableCell align="center">
+                    <Button 
+                      variant="contained" 
+                      color="primary" 
+                      onClick={() => navigate(`/clientes/editar/${cliente.id}`)}
+                      sx={{ marginRight: "8px" }}
+                    >
+                      Editar
+                    </Button>
+                    <Button 
+                      variant="contained" 
+                      color="error" 
+                      onClick={() => handleDelete(cliente.id)}
+                    >
+                      Excluir
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
+    </Container>
   );
 };
 
