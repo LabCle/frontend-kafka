@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Container, CssBaseline, AppBar, Toolbar, Typography } from "@mui/material";
+import ClienteList from "./components/ClienteList";
+import ClienteForm from "./components/ClienteForm";
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <CssBaseline />
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6">Gestão de Clientes</Typography>
+        </Toolbar>
+      </AppBar>
+      <Container style={{ marginTop: "20px" }}>
+        <Routes>
+          <Route path="/" element={<ClienteList />} />
+          <Route path="/clientes/novo" element={<ClienteForm />} />
+          <Route path="/clientes/editar/:id" element={<ClienteForm />} />
+        </Routes>
+      </Container>
+    </Router>
   );
-}
+};
 
 export default App;
