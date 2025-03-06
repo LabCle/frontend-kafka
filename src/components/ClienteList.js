@@ -21,7 +21,6 @@ const ClienteList = () => {
 
   return (
     <Container maxWidth="md">
-      {/* Box Centralizado */}
       <Box 
         sx={{
           display: "flex", 
@@ -35,25 +34,18 @@ const ClienteList = () => {
           boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)"
         }}
       >
-        <Typography 
-          variant="h5" 
-          sx={{ 
-            marginBottom: "15px", 
-            textAlign: "center",
-            fontWeight: "bold"
-          }}
-        >
+        <Typography variant="h5" sx={{ marginBottom: "15px", textAlign: "center", fontWeight: "bold" }}>
           Lista de Clientes
         </Typography>
         
-        <Button 
-          variant="contained" 
-          color="primary" 
-          onClick={() => navigate("/clientes/novo")} 
-          sx={{ marginBottom: "20px", padding: "10px 20px" }}
-        >
-          Adicionar Cliente
-        </Button>
+        <Box sx={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
+          <Button variant="contained" color="primary" onClick={() => navigate("/clientes/novo")}>
+            Adicionar Cliente
+          </Button>
+          <Button variant="contained" color="secondary" onClick={() => navigate("/dashboard")}>
+            📊 Kafka Dashboard
+          </Button>
+        </Box>
 
         <TableContainer component={Paper} sx={{ width: "100%" }}>
           <Table>
@@ -72,19 +64,10 @@ const ClienteList = () => {
                   <TableCell align="center">{cliente.nome}</TableCell>
                   <TableCell align="center">{cliente.email}</TableCell>
                   <TableCell align="center">
-                    <Button 
-                      variant="contained" 
-                      color="primary" 
-                      onClick={() => navigate(`/clientes/editar/${cliente.id}`)}
-                      sx={{ marginRight: "8px" }}
-                    >
+                    <Button variant="contained" color="primary" onClick={() => navigate(`/clientes/editar/${cliente.id}`)} sx={{ marginRight: "8px" }}>
                       Editar
                     </Button>
-                    <Button 
-                      variant="contained" 
-                      color="error" 
-                      onClick={() => handleDelete(cliente.id)}
-                    >
+                    <Button variant="contained" color="error" onClick={() => handleDelete(cliente.id)}>
                       Excluir
                     </Button>
                   </TableCell>
