@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: react-kafka-frontend
+  namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: clecio/react-kafka-frontend
+    argocd-image-updater.argoproj.io/clecio_react-kafka-frontend.update-strategy: latest
+    argocd-image-updater.argoproj.io/clecio_react-kafka-frontend.allow-tags: latest
+    argocd-image-updater.argoproj.io/write-back-method: git
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/LabCle/spring-kafka.git
+    targetRevision: main
+    path: helm/react-kafka-frontend
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kafka-app
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

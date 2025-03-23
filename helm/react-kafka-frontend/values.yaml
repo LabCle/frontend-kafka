@@ -1,0 +1,15 @@
+replicaCount: 1
+
+image:
+  repository: clecio/react-kafka-frontend
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+
+resources: {}

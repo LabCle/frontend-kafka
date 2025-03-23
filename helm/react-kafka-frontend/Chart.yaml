@@ -1,0 +1,6 @@
+apiVersion: v2
+name: react-kafka-frontend
+description: Helm chart para o frontend React da aplicação Kafka
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
