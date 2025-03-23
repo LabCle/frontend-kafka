@@ -11,7 +11,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/LabCle/spring-kafka.git
+    repoURL: https://github.com/LabCle/spring-kafka.git 
     targetRevision: main
     path: helm/react-kafka-frontend
   destination:
